@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { X, ExternalLink, Copy, Check, Lock, CheckCircle2, ListOrdered, Sparkles, HelpCircle, Layers } from 'lucide-react';
 import { Ferramenta } from '../types';
 import { getToolIcon, getToolColorTheme } from '../utils/toolTheme';
@@ -10,6 +10,20 @@ interface ToolModalProps {
 
 export const ToolModal: React.FC<ToolModalProps> = ({ tool, onClose }) => {
   const [copied, setCopied] = useState(false);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+
+  // Trava a rolagem da página ao fundo e leva o foco para o botão Fechar
+  useEffect(() => {
+    if (!tool) return;
+    const previousOverflow = document.body.style.overflow;
+    const previousFocus = document.activeElement as HTMLElement | null;
+    document.body.style.overflow = 'hidden';
+    closeButtonRef.current?.focus();
+    return () => {
+      document.body.style.overflow = previousOverflow;
+      previousFocus?.focus?.();
+    };
+  }, [tool]);
 
   useEffect(() => {
     if (!tool) return;
@@ -43,8 +57,8 @@ export const ToolModal: React.FC<ToolModalProps> = ({ tool, onClose }) => {
       setCopied(true);
       setTimeout(() => setCopied(false), 3000);
     } catch {
-      setCopied(true);
-      setTimeout(() => setCopied(false), 3000);
+      // Sem permissão para copiar: mostra o endereço para a pessoa copiar à mão
+      window.prompt('Copie o endereço abaixo:', directUrl);
     }
   };
 
@@ -57,12 +71,14 @@ export const ToolModal: React.FC<ToolModalProps> = ({ tool, onClose }) => {
       aria-labelledby="modal-tool-title"
     >
       <div
-        className="w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-slate-200/80 text-slate-800 my-auto max-h-[92vh] flex flex-col overflow-hidden animate-fade-up"
+        className="w-full max-w-2xl bg-white rounded-3xl shadow-2xl border border-slate-200/80 text-slate-800 my-auto max-h-[92vh] flex flex-col overflow-hidden"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Faixa Superior Colorida (Conforme a cor da ferramenta) */}
         <div className={`bg-gradient-to-r ${colorTheme.headerGrad} p-6 sm:p-7 text-white relative shrink-0 shadow-xs`}>
           <button
+            ref={closeButtonRef}
+            type="button"
             onClick={onClose}
             className="absolute top-5 right-5 p-2 rounded-xl bg-white/15 hover:bg-white/25 active:bg-white/35 text-white transition focus:outline-hidden focus:ring-2 focus:ring-white/70 cursor-pointer"
             aria-label="Fechar janela de detalhes"
@@ -94,6 +110,8 @@ export const ToolModal: React.FC<ToolModalProps> = ({ tool, onClose }) => {
               <img
                 src={tool.imagemDemo}
                 alt={`Demonstração de ${tool.nome}`}
+                loading="lazy"
+                referrerPolicy="no-referrer"
                 className="w-full h-auto object-cover max-h-72"
                 onError={(e) => {
                   (e.target as HTMLElement).style.display = 'none';
@@ -202,6 +220,7 @@ export const ToolModal: React.FC<ToolModalProps> = ({ tool, onClose }) => {
           </a>
 
           <button
+            type="button"
             onClick={handleCopyLink}
             className="sm:w-auto inline-flex items-center justify-center gap-2 py-4 px-5 rounded-xl bg-white hover:bg-slate-100 active:bg-slate-200 text-slate-800 font-semibold text-base border border-slate-300 transition cursor-pointer"
           >

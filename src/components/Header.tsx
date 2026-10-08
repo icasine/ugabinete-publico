@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Smartphone, Download, Sparkles } from 'lucide-react';
+import { Download, Smartphone } from 'lucide-react';
 import { usePWA } from '../hooks/usePWA';
 import { InstallModal } from './InstallModal';
 
@@ -19,52 +19,36 @@ export const Header: React.FC = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-30 bg-white/90 backdrop-blur-md border-b border-slate-200/80 shadow-xs transition-all">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 py-3.5 flex items-center justify-between gap-4">
-          {/* Logo e Nome */}
-          <div className="flex items-center gap-3.5">
-            <div className="w-11 h-11 rounded-2xl bg-gradient-to-br from-blue-600 via-blue-700 to-indigo-900 p-[2px] shadow-sm shadow-blue-500/20 flex items-center justify-center shrink-0">
-              <div className="w-full h-full rounded-[14px] bg-gradient-to-br from-blue-600 to-indigo-800 flex items-center justify-center text-white relative overflow-hidden">
-                <span className="font-extrabold text-2xl tracking-tighter drop-shadow-xs">u</span>
-                <span className="absolute top-1 right-1 w-2 h-2 rounded-full bg-amber-400"></span>
-              </div>
+      <header className="bg-white border-b border-slate-200 sticky top-0 z-20">
+        <div className="max-w-6xl mx-auto px-4 py-2.5 flex items-center justify-between">
+          {/* Logo e Nome discretos */}
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white font-extrabold text-lg shrink-0">
+              u
             </div>
-
-            <div>
-              <div className="flex items-center gap-2">
-                <span className="text-2xl sm:text-[26px] font-black text-slate-900 tracking-tight leading-none">
-                  uGabinete
-                </span>
-                <span className="hidden md:inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-blue-50 text-blue-700 text-xs font-bold border border-blue-200/60">
-                  <Sparkles className="w-3 h-3 text-amber-500" />
-                  Portal Oficial
-                </span>
-              </div>
-              <p className="text-xs sm:text-sm text-slate-500 font-medium">
-                Portal de ferramentas web
-              </p>
-            </div>
+            <span className="text-xl font-bold text-slate-900 tracking-tight">
+              uGabinete
+            </span>
           </div>
 
-          {/* Botão Instalar no Celular */}
+          {/* Botão Instalar pequeno */}
           {shouldShowInstallButton && (
             <button
               onClick={handleInstallClick}
-              className="inline-flex items-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl bg-blue-50 hover:bg-blue-600 text-blue-800 hover:text-white border-2 border-blue-600 font-bold text-sm sm:text-base transition-all shadow-xs hover:shadow-md active:scale-98 cursor-pointer focus:outline-hidden focus:ring-2 focus:ring-blue-500"
-              aria-label="Instalar uGabinete no dispositivo"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-slate-300 hover:border-slate-400 bg-white hover:bg-slate-50 text-slate-700 text-sm font-medium transition cursor-pointer"
+              aria-label="Instalar uGabinete"
             >
               {isIOS ? (
-                <Smartphone className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
+                <Smartphone className="w-4 h-4 text-slate-500" />
               ) : (
-                <Download className="w-4 h-4 sm:w-5 sm:h-5 shrink-0" />
+                <Download className="w-4 h-4 text-slate-500" />
               )}
-              <span>Instalar no celular</span>
+              <span>Instalar</span>
             </button>
           )}
         </div>
       </header>
 
-      {/* Modal explicativo para dispositivos iOS */}
       <InstallModal isOpen={showIOSModal} onClose={() => setShowIOSModal(false)} />
     </>
   );

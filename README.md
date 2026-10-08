@@ -124,3 +124,20 @@ Para máxima compatibilidade com aparelhos mais antigos, você pode acrescentar 
 1. **`public/pwa-192x192.png`** (192 × 192 pixels) — Android / Chrome.
 2. **`public/pwa-512x512.png`** (512 × 512 pixels) — Tela de abertura (splash screen).
 3. **`public/apple-touch-icon.png`** (180 × 180 pixels) — Safari no iPhone e iPad.
+
+
+## Segurança e regras do ferramentas.json
+
+O site confere cada ferramenta antes de mostrar. Se algo estiver errado, aquela ferramenta é ignorada e as outras continuam aparecendo.
+
+- `id`: só letras minúsculas, números e hífen (ex.: `gerador-oficios`). Não repita o mesmo id.
+- `nome` e `url` são obrigatórios. O link precisa começar com `https://`.
+- `imagemDemo`: caminho dentro de `/demos/` (ex.: `/demos/gerador.png`) ou um link `https://`.
+- Nunca coloque senhas, tokens, e-mails pessoais ou links de repositórios privados: este repositório é público.
+
+## Arquivos que não devem ser apagados
+
+- `public/_headers`: cabeçalhos de segurança lidos pelo Cloudflare Pages (bloqueiam scripts de terceiros, impedem que o site seja embutido em outras páginas e controlam o cache).
+- `public/sw.js`: service worker do aplicativo instalável. Sempre que alterar este arquivo, aumente a `VERSAO` no topo (v2, v3, ...).
+
+Se um dia o site passar a usar imagens, fontes ou scripts de outro endereço, será preciso liberar esse endereço na linha `Content-Security-Policy` do `public/_headers`.

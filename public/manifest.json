@@ -2,13 +2,13 @@
   "id": "/",
   "name": "uGabinete",
   "short_name": "uGabinete",
-  "description": "Portal de ferramentas web simples, acessíveis e intuitivas.",
+  "description": "Acesso rápido às ferramentas web do uGabinete.",
+  "lang": "pt-BR",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#2563eb",
-  "orientation": "portrait-primary",
+  "background_color": "#f8fafc",
+  "theme_color": "#ffffff",
   "icons": [
     {
       "src": "/icon.svg",
@@ -18,7 +18,7 @@
     },
     {
       "src": "/icon.svg",
-      "sizes": "192x192 512x512",
+      "sizes": "any",
       "type": "image/svg+xml",
       "purpose": "maskable"
     }

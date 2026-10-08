@@ -1,0 +1,27 @@
+# Cabeçalhos de segurança e de cache lidos pelo Cloudflare Pages.
+# Não apague este arquivo. Ele fica em public/ e vai junto no build (dist/_headers).
+
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self'; manifest-src 'self'; worker-src 'self'; frame-src 'none'; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: DENY
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=()
+  Cross-Origin-Opener-Policy: same-origin
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+# Arquivos que mudam com frequência: o navegador sempre confere se há versão nova
+/
+  Cache-Control: no-cache
+/index.html
+  Cache-Control: no-cache
+/ferramentas.json
+  Cache-Control: no-cache
+/sw.js
+  Cache-Control: no-cache
+/manifest.json
+  Cache-Control: no-cache
+
+# Arquivos gerados pelo Vite têm nome único: podem ficar guardados por 1 ano
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable

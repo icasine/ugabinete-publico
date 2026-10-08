@@ -1,102 +1,115 @@
 /**
  * Service Worker do uGabinete
- * Versão do Cache: ugabinete-v1
  *
- * Estratégia de cache:
- * 1. ferramentas.json e páginas HTML (navegação): NETWORK-FIRST (sempre tenta buscar dados novos online; se sem internet, usa cache).
- * 2. Recursos estáticos (scripts, estilos, ícones, imagens): CACHE-FIRST (usa cache para agilidade e economia de dados).
+ * IMPORTANTE: ao mudar este arquivo, aumente o número da versão abaixo.
+ * Isso apaga o cache antigo nos aparelhos de quem já instalou o site.
+ *
+ * Estratégia:
+ * 1. Páginas e ferramentas.json: REDE PRIMEIRO (sempre busca a versão nova;
+ *    sem internet, usa a última cópia salva).
+ * 2. Arquivos de /assets/ (JS e CSS com nome único gerado pelo Vite):
+ *    CACHE PRIMEIRO (nunca mudam de conteúdo).
+ * 3. Demais arquivos locais (ícone, manifest, imagens): usa o cache e
+ *    atualiza em segundo plano.
+ * Links de outros sites (as próprias ferramentas, fontes) nunca são
+ * interceptados.
  */
+const VERSAO = 'v2';
+const CACHE_NAME = `ugabinete-${VERSAO}`;
+const PRECACHE = ['/', '/index.html', '/manifest.json', '/icon.svg', '/ferramentas.json'];
 
-const CACHE_NAME = 'ugabinete-v1';
-
-const STATIC_ASSETS = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/icon.svg',
-  '/ferramentas.json'
-];
-
-// Instalação do Service Worker e pré-cache inicial
 self.addEventListener('install', (event) => {
   event.waitUntil(
-    caches.open(CACHE_NAME).then((cache) => {
-      return cache.addAll(STATIC_ASSETS);
-    })
+    caches.open(CACHE_NAME).then((cache) => cache.addAll(PRECACHE)).then(() => self.skipWaiting())
   );
-  self.skipWaiting();
 });
 
-// Ativação e limpeza de versões antigas do cache
 self.addEventListener('activate', (event) => {
   event.waitUntil(
-    caches.keys().then((keys) => {
-      return Promise.all(
-        keys.map((key) => {
-          if (key !== CACHE_NAME) {
-            return caches.delete(key);
-          }
-        })
-      );
-    }).then(() => self.clients.claim())
+    caches
+      .keys()
+      .then((keys) =>
+        Promise.all(
+          keys
+            .filter((key) => key.startsWith('ugabinete-') && key !== CACHE_NAME)
+            .map((key) => caches.delete(key))
+        )
+      )
+      .then(() => self.clients.claim())
   );
 });
 
-// Interceptação de requisições
+/** Só guarda respostas completas e do próprio site. */
+function podeGuardar(resposta) {
+  return resposta && resposta.ok && resposta.status === 200 && resposta.type === 'basic';
+}
+
+async function guardar(chave, resposta) {
+  if (!podeGuardar(resposta)) return;
+  const cache = await caches.open(CACHE_NAME);
+  await cache.put(chave, resposta.clone());
+}
+
+async function redePrimeiro(request, chave) {
+  try {
+    const resposta = await fetch(request);
+    await guardar(chave, resposta);
+    return resposta;
+  } catch {
+    const salva = await caches.match(chave);
+    if (salva) return salva;
+    if (request.mode === 'navigate') {
+      const pagina = await caches.match('/index.html');
+      if (pagina) return pagina;
+    }
+    return new Response('Sem conexão com a internet.', {
+      status: 503,
+      headers: { 'Content-Type': 'text/plain; charset=utf-8' },
+    });
+  }
+}
+
+async function cachePrimeiro(request) {
+  const salva = await caches.match(request);
+  if (salva) return salva;
+  const resposta = await fetch(request);
+  await guardar(request, resposta);
+  return resposta;
+}
+
+async function cacheEAtualiza(request) {
+  const salva = await caches.match(request);
+  const daRede = fetch(request)
+    .then(async (resposta) => {
+      await guardar(request, resposta);
+      return resposta;
+    })
+    .catch(() => salva);
+  return salva || daRede;
+}
+
 self.addEventListener('fetch', (event) => {
   const request = event.request;
-
-  // Apenas intercepta requisições HTTP GET locais
   if (request.method !== 'GET') return;
 
   const url = new URL(request.url);
-
-  // Não intercepta requisições de outras origens ou de extensões
   if (url.origin !== self.location.origin) return;
 
-  // Regra A: ferramentas.json e navegação de páginas -> Rede primeiro (Network-First)
-  const isDataOrPage =
-    url.pathname.endsWith('ferramentas.json') ||
-    request.mode === 'navigate' ||
-    url.pathname === '/';
-
-  if (isDataOrPage) {
-    event.respondWith(
-      fetch(request)
-        .then((networkResponse) => {
-          if (networkResponse && networkResponse.status === 200) {
-            const responseClone = networkResponse.clone();
-            caches.open(CACHE_NAME).then((cache) => cache.put(request, responseClone));
-          }
-          return networkResponse;
-        })
-        .catch(() => {
-          // Em caso de falha de conexão, recorre ao cache
-          return caches.match(request).then((cachedResponse) => {
-            if (cachedResponse) return cachedResponse;
-            if (request.mode === 'navigate') {
-              return caches.match('/index.html');
-            }
-            return new Response('Sem conexão com a internet', { status: 503 });
-          });
-        })
-    );
+  // ferramentas.json: uma única chave, sem parâmetros (evita acumular cópias)
+  if (url.pathname === '/ferramentas.json') {
+    event.respondWith(redePrimeiro(request, '/ferramentas.json'));
     return;
   }
 
-  // Regra B: Arquivos estáticos (JS, CSS, Imagens, Fontes) -> Cache primeiro (Cache-First)
-  event.respondWith(
-    caches.match(request).then((cachedResponse) => {
-      if (cachedResponse) {
-        return cachedResponse;
-      }
-      return fetch(request).then((networkResponse) => {
-        if (networkResponse && networkResponse.status === 200) {
-          const responseClone = networkResponse.clone();
-          caches.open(CACHE_NAME).then((cache) => cache.put(request, responseClone));
-        }
-        return networkResponse;
-      });
-    })
-  );
+  if (request.mode === 'navigate') {
+    event.respondWith(redePrimeiro(request, '/index.html'));
+    return;
+  }
+
+  if (url.pathname.startsWith('/assets/')) {
+    event.respondWith(cachePrimeiro(request));
+    return;
+  }
+
+  event.respondWith(cacheEAtualiza(request));
 });

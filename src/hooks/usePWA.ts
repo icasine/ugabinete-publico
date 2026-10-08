@@ -37,19 +37,19 @@ export function usePWA() {
     window.addEventListener('appinstalled', handleAppInstalled);
 
     // 4. Registra o Service Worker SOMENTE no site publicado oficial, NUNCA no AI Studio preview nem localhost
+    // Lista fechada de endereços oficiais. Em qualquer outro (preview do
+    // AI Studio, localhost, cópias do site) o service worker não é registrado.
     const hostname = window.location.hostname;
-    const isPreviewOrDev =
-      hostname.includes('run.app') ||
-      hostname.includes('localhost') ||
-      hostname.includes('127.0.0.1') ||
-      hostname === '';
+    const isProducao =
+      hostname === 'ugabinete.com.br' ||
+      hostname === 'www.ugabinete.com.br' ||
+      hostname.endsWith('.pages.dev');
+    const isPreviewOrDev = !isProducao;
 
     if (!isPreviewOrDev && 'serviceWorker' in navigator && import.meta.env.PROD) {
       navigator.serviceWorker
-        .register('/sw.js')
-        .then((reg) => {
-          console.log('Service Worker registrado com sucesso no uGabinete:', reg.scope);
-        })
+        .register('/sw.js', { updateViaCache: 'none' })
+        .then((reg) => reg.update())
         .catch((err) => {
           console.warn('Falha ao registrar Service Worker:', err);
         });
