@@ -1,0 +1,46 @@
+[
+  {
+    "id": "gerador-documentos",
+    "nome": "Gerador de Modelos de Ofício",
+    "resumo": "Crie e formate modelos de ofícios e declarações padronizadas de forma rápida.",
+    "descricao": "Ferramenta desenvolvida para agilizar a redação de documentos oficiais e correspondências rotineiras. Permite preencher dados básicos e gerar um arquivo pronto para impressão ou envio digital, seguindo o padrão oficial.",
+    "categoria": "Documentos",
+    "url": "https://exemplo.com",
+    "exigeLogin": false,
+    "destaques": [
+      "Funciona direto no navegador, sem precisar instalar nada",
+      "Modelos pré-configurados prontos para preenchimento",
+      "Exportação direta para PDF e impressão",
+      "Não armazena nenhum dado sigiloso externamente"
+    ],
+    "comoUsar": [
+      "Clique no botão 'Abrir ferramenta agora' para abrir o gerador em nova aba.",
+      "Selecione o tipo de modelo desejado na lista inicial.",
+      "Preencha os campos solicitados (data, destinatário, assunto e texto).",
+      "Clique em 'Gerar Documento' para visualizar e imprimir ou salvar em PDF."
+    ],
+    "imagemDemo": ""
+  },
+  {
+    "id": "painel-atendimentos",
+    "nome": "Controle de Atendimentos e Demandas",
+    "resumo": "Organize solicitações, pedidos de cidadãos e acompanhe o andamento de cada caso.",
+    "descricao": "Sistema de gestão interna para registro e acompanhamento de chamados e demandas da população. Ajuda a equipe a manter o histórico de cada caso com prazos, responsáveis e situação atualizada.",
+    "categoria": "Gestão",
+    "url": "https://exemplo.com",
+    "exigeLogin": true,
+    "destaques": [
+      "Histórico completo de cada demanda registrada",
+      "Painel de controle com prazos e status visual",
+      "Acesso seguro e individual por usuário autorizado",
+      "Relatórios de produtividade e demandas atendidas"
+    ],
+    "comoUsar": [
+      "Clique em 'Abrir ferramenta agora' para acessar a página do sistema.",
+      "Digite seu e-mail e senha de acesso previamente cadastrados na ferramenta.",
+      "No painel principal, clique em 'Nova Demanda' para registrar um atendimento.",
+      "Acompanhe o andamento das solicitações pelas colunas de status."
+    ],
+    "imagemDemo": ""
+  }
+]
