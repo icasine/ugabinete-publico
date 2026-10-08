@@ -7,6 +7,8 @@
     "categoria": "Documentos",
     "url": "https://exemplo.com",
     "exigeLogin": false,
+    "icone": "FileText",
+    "cor": "azul",
     "destaques": [
       "Funciona direto no navegador, sem precisar instalar nada",
       "Modelos pré-configurados prontos para preenchimento",
@@ -29,6 +31,8 @@
     "categoria": "Gestão",
     "url": "https://exemplo.com",
     "exigeLogin": true,
+    "icone": "Users",
+    "cor": "verde",
     "destaques": [
       "Histórico completo de cada demanda registrada",
       "Painel de controle com prazos e status visual",

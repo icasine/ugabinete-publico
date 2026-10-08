@@ -9,4 +9,6 @@ export interface Ferramenta {
   destaques: string[];
   comoUsar: string[];
   imagemDemo: string;
+  icone?: string;
+  cor?: 'azul' | 'verde' | 'roxo' | 'laranja' | 'rosa' | string;
 }

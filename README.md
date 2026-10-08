@@ -1,8 +1,8 @@
 # uGabinete (ugabinete.com.br)
 
-Portal e vitrine simples para catálogo de ferramentas web. 
+Portal e vitrine de ferramentas web simples, acessíveis e intuitivas para o dia a dia do gabinete.
 
-O site é 100% estático, leve, acessível e sem inteligência artificial ou servidores adicionais, pronto para ser hospedado gratuitamente no **Cloudflare Pages**.
+O site é 100% estático, responsivo, leve e sem inteligência artificial ou servidores adicionais, pronto para ser hospedado no **Cloudflare Pages**.
 
 ---
 
@@ -16,12 +16,12 @@ O Cloudflare Pages atualiza o seu site automaticamente sempre que você enviar a
 3. Selecione a aba **Pages** e clique em **Conectar ao Git** (Connect to Git).
 4. Escolha a sua conta do GitHub e selecione o repositório do **uGabinete**.
 5. Na tela de configuração de build (**Configurações de compilação**):
-   - **Framework predefinido (Preset)**: selecione `Vite` (ou `Nenhum`).
+   - **Framework predefinido (Preset)**: selecione `Vite`.
    - **Comando de build (Build command)**: `npm run build`
    - **Diretório de saída (Build output directory)**: `dist`
    - **Variáveis de ambiente**: Não é necessária nenhuma variável.
 6. Clique em **Salvar e implantar** (Save and Deploy).
-7. Aguarde cerca de 1 a 2 minutos. O Cloudflare fornecerá um endereço gratuito com final `.pages.dev`.
+7. Aguarde cerca de 1 minuto. O Cloudflare fornecerá o endereço publicado (ex: `ugabinete.pages.dev`).
 
 ---
 
@@ -33,32 +33,30 @@ Depois de publicado no Cloudflare Pages:
 2. Clique no botão **Configurar um domínio personalizado** (Set up a custom domain).
 3. Digite `ugabinete.com.br` (e opcionalmente `www.ugabinete.com.br`).
 4. Clique em **Continuar**.
-5. Se o seu domínio já estiver com o DNS gerenciado na Cloudflare:
-   - A Cloudflare adicionará os apontamentos de DNS automaticamente com 1 clique.
-6. Se o domínio estiver no Registro.br ou em outro provedor de DNS:
-   - Crie um registro do tipo **CNAME** apontando para o seu subdomínio do Pages (exemplo: `ugabinete.pages.dev`).
-7. O certificado de segurança SSL (HTTPS) é gerado automaticamente e de graça pela Cloudflare em poucos minutos.
+5. Se o domínio estiver na Cloudflare: os apontamentos de DNS serão configurados automaticamente.
+6. Se o domínio estiver no Registro.br ou similar: adicione um apontamento **CNAME** com o valor do subdomínio do Pages (ex: `ugabinete.pages.dev`).
+7. O certificado de segurança SSL (HTTPS) é ativado gratuitamente em poucos minutos.
 
 ---
 
 ## 3. Como Adicionar ou Editar Ferramentas no `public/ferramentas.json`
 
-Todas as ferramentas do site ficam cadastradas em um único arquivo: **`public/ferramentas.json`**.  
-Você pode editá-lo diretamente pelo site do GitHub clicando no ícone do lápis.
+Todas as ferramentas do site ficam cadastradas no arquivo **`public/ferramentas.json`**.  
+Você pode editá-lo diretamente pelo GitHub no navegador clicando no ícone do lápis.
 
 ### Bloco Modelo para Copiar e Colar:
-
-Para adicionar uma nova ferramenta, insira uma vírgula após a última ferramenta existente e cole o bloco abaixo antes do colchete final `]`:
 
 ```json
 {
   "id": "nome-da-ferramenta",
   "nome": "Nome Visível da Ferramenta",
-  "resumo": "Uma frase curta explicando o que ela faz.",
-  "descricao": "Explicação mais detalhada sobre a finalidade da ferramenta e seus benefícios para o usuário.",
-  "categoria": "Utilidades",
+  "resumo": "Uma frase curta e direta explicando o que ela faz.",
+  "descricao": "Explicação mais detalhada sobre a finalidade da ferramenta e seus benefícios para a rotina de trabalho.",
+  "categoria": "Documentos",
   "url": "https://link-da-sua-ferramenta.com",
   "exigeLogin": false,
+  "icone": "FileText",
+  "cor": "azul",
   "destaques": [
     "Primeiro recurso ou vantagem importante",
     "Segundo recurso prático da ferramenta",
@@ -67,47 +65,62 @@ Para adicionar uma nova ferramenta, insira uma vírgula após a última ferramen
   "comoUsar": [
     "Acesse a ferramenta pelo botão 'Abrir ferramenta agora'.",
     "Preencha as informações solicitadas na tela inicial.",
-    "Clique no botão de confirmação para obter o resultado."
+    "Clique no botão de confirmação para concluir o uso."
   ],
   "imagemDemo": ""
 }
 ```
 
 ### Explicação dos Campos:
-- **`id`**: Deve conter apenas letras minúsculas, números e traços, sem espaços nem acentos (ex: `calculadora-prazos`). Ele é usado para criar o link direto: `ugabinete.com.br/#calculadora-prazos`.
-- **`nome`**: Nome principal exibido no card e no título da janela.
+- **`id`**: Apenas letras minúsculas, números e traços, sem espaços nem acentos (ex: `gerador-oficio`). Usado no link direto: `ugabinete.com.br/#gerador-oficio`.
+- **`nome`**: Nome principal exibido no card e no topo da janela de detalhes.
 - **`resumo`**: Frase direta de 1 linha exibida no card principal.
-- **`descricao`**: Texto completo exibido dentro da seção "Para que serve".
-- **`categoria`**: Nome da categoria (ex: *Documentos*, *Gestão*, *Calculadoras*, *Consultas*).
-- **`url`**: Endereço completo do site da ferramenta (lembre-se de incluir `https://`).
-- **`exigeLogin`**: Coloque `true` se a ferramenta exigir cadastro/senha própria, ou `false` se for de acesso livre.
-- **`destaques`**: Lista de pontos fortes ou recursos principais (entre aspas).
+- **`descricao`**: Texto completo na seção "Para que serve".
+- **`categoria`**: Nome da categoria (ex: *Documentos*, *Gestão*, *Atendimento*, *Calculadoras*).
+- **`url`**: Link completo da aplicação (com `https://`).
+- **`exigeLogin`**: `true` se exigir conta/senha própria, ou `false` se o acesso for livre.
+- **`icone`** *(opcional)*: Nome de um ícone da biblioteca `lucide-react`. Exemplos populares:
+  - `FileText` (documentos e textos)
+  - `Users` (atendimento e pessoas)
+  - `Calendar` (agendas e prazos)
+  - `ClipboardList` (tarefas e cadastros)
+  - `CheckSquare` (aprovações e checklist)
+  - `Folder` (pastas e arquivos)
+  - `Calculator` (cálculos)
+  - `Briefcase` (processos administrativos)
+  - `ShieldCheck` (validação e segurança)
+  - `BarChart3` (indicadores e relatórios)
+- **`cor`** *(opcional)*: Cor temática do card e da faixa de detalhes. Opções disponíveis:
+  - `"azul"` (padrão)
+  - `"verde"`
+  - `"roxo"`
+  - `"laranja"`
+  - `"rosa"`
+- **`destaques`**: Lista de pontos fortes ou recursos principais.
 - **`comoUsar`**: Passo a passo numerado de instruções para o usuário.
-- **`imagemDemo`**: Caminho da imagem de exemplo (ex: `"/demos/calculadora.png"`) ou vazio `""`.
+- **`imagemDemo`**: Caminho da imagem de exemplo (ex: `"/demos/exemplo.png"`) ou vazio `""`.
 
-> **Observação:** O campo de busca e o filtro de categorias aparecem automaticamente assim que houver 6 ou mais ferramentas cadastradas.
+> **Observação:** O campo de busca e o filtro de categorias passam a aparecer automaticamente na página quando houver 6 ou mais ferramentas cadastradas.
 
 ---
 
 ## 4. Como Adicionar Imagens de Demonstração
 
-1. Coloque o arquivo de imagem dentro da pasta **`public/demos/`** (por exemplo, `painel.png`).
-2. No arquivo `public/ferramentas.json`, preencha o campo correspondente:
+1. Adicione a sua imagem dentro da pasta **`public/demos/`** (por exemplo, `captura.png`).
+2. No arquivo `public/ferramentas.json`, aponte para ela:
    ```json
-   "imagemDemo": "/demos/painel.png"
+   "imagemDemo": "/demos/captura.png"
    ```
-3. Se a ferramenta não tiver imagem, deixe o campo com aspas vazias (`""`). O site continuará elegante sem exibir moldura quebrada.
+3. Se a ferramenta não tiver imagem, deixe o campo vazio: `"imagemDemo": ""`.
 
 ---
 
-## 5. Aplicativo no Celular (PWA) e Imagens de Ícones Recomendadas
+## 5. Aplicativo no Celular (PWA) e Ícones Recomendados
 
-O site já conta com suporte a **Progressive Web App (PWA)**, permitindo instalação na tela inicial de celulares (Android e iPhone) e computadores, abrindo em tela cheia como se fosse um aplicativo nativo.
+O site é um **Progressive Web App (PWA)** instalável na tela inicial de smartphones (Android e iOS) e computadores desktop.
 
-Atualmente, o site utiliza o vetor `public/icon.svg` de alta resolução. Para garantir 100% de compatibilidade em versões antigas de navegadores e aparelhos, você pode colocar na pasta `public/` as seguintes versões em formato PNG:
+Para máxima compatibilidade com aparelhos mais antigos, você pode acrescentar na pasta `public/` as seguintes versões em PNG geradas a partir do `public/icon.svg`:
 
-1. **`public/pwa-192x192.png`** (192 × 192 pixels) — Ícone padrão para Android / Chrome.
-2. **`public/pwa-512x512.png`** (512 × 512 pixels) — Ícone de alta definição para tela de abertura (splash screen) e lojas web.
-3. **`public/apple-touch-icon.png`** (180 × 180 pixels) — Ícone específico utilizado pelo Safari no iPhone / iPad.
-
-Para gerar esses PNGs, basta converter o arquivo `public/icon.svg` em qualquer conversor gratuito de SVG para PNG (ou software de imagens como Figma/Photoshop).
+1. **`public/pwa-192x192.png`** (192 × 192 pixels) — Android / Chrome.
+2. **`public/pwa-512x512.png`** (512 × 512 pixels) — Tela de abertura (splash screen).
+3. **`public/apple-touch-icon.png`** (180 × 180 pixels) — Safari no iPhone e iPad.
