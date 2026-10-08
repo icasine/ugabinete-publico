@@ -23,9 +23,7 @@ export const Header: React.FC = () => {
         <div className="max-w-6xl mx-auto px-4 py-2.5 flex items-center justify-between">
           {/* Logo e Nome discretos */}
           <div className="flex items-center gap-2.5">
-            <div className="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center text-white font-extrabold text-lg shrink-0">
-              u
-            </div>
+            <img src="/icon.svg" alt="" width="32" height="32" className="w-8 h-8 shrink-0" />
             <span className="text-xl font-bold text-slate-900 tracking-tight">
               uGabinete
             </span>
