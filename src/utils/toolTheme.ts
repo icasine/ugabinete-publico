@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   FileText,
   Users,
@@ -19,10 +18,33 @@ import {
   Inbox,
   MessageSquare,
   BarChart3,
+  MapPin,
+  Map,
+  Phone,
+  Mail,
+  FileCheck,
+  Sliders,
+  Settings,
+  Link,
+  ExternalLink,
+  Printer,
+  Database,
+  BookOpen,
+  HelpCircle,
+  Send,
+  Archive,
+  Tag,
+  Sparkles,
+  PieChart,
+  Key,
+  Lock,
+  Building,
+  Home,
+  Scale,
   LucideIcon,
 } from 'lucide-react';
 
-const ICON_MAP: Record<string, LucideIcon> = {
+export const ICON_MAP: Record<string, LucideIcon> = {
   FileText,
   Users,
   Calendar,
@@ -42,7 +64,80 @@ const ICON_MAP: Record<string, LucideIcon> = {
   Inbox,
   MessageSquare,
   BarChart3,
+  MapPin,
+  Map,
+  Phone,
+  Mail,
+  FileCheck,
+  Sliders,
+  Settings,
+  Link,
+  ExternalLink,
+  Printer,
+  Database,
+  BookOpen,
+  HelpCircle,
+  Send,
+  Archive,
+  Tag,
+  Sparkles,
+  PieChart,
+  Key,
+  Lock,
+  Building,
+  Home,
+  Scale,
 };
+
+export interface IconOption {
+  name: string;
+  label: string;
+}
+
+export const AVAILABLE_ICONS: IconOption[] = [
+  { name: 'FileText', label: 'Documento de texto' },
+  { name: 'FileCheck', label: 'Documento conferido' },
+  { name: 'FileSpreadsheet', label: 'Planilha' },
+  { name: 'Folder', label: 'Pasta' },
+  { name: 'Archive', label: 'Arquivo / Armazenamento' },
+  { name: 'Users', label: 'Pessoas / Equipe' },
+  { name: 'Calendar', label: 'Calendário / Agenda' },
+  { name: 'Clock', label: 'Relógio / Prazos' },
+  { name: 'ClipboardList', label: 'Lista de tarefas' },
+  { name: 'CheckSquare', label: 'Checklist / Aprovação' },
+  { name: 'Calculator', label: 'Calculadora' },
+  { name: 'Briefcase', label: 'Maleta / Processos' },
+  { name: 'Building', label: 'Prédio / Órgão público' },
+  { name: 'Home', label: 'Início / Gabinete' },
+  { name: 'ShieldCheck', label: 'Segurança / Validação' },
+  { name: 'Scale', label: 'Balança / Jurídico' },
+  { name: 'Bookmark', label: 'Marcador / Favorito' },
+  { name: 'Tag', label: 'Etiqueta / Categoria' },
+  { name: 'Layers', label: 'Camadas / Múltiplos' },
+  { name: 'Search', label: 'Busca / Consulta' },
+  { name: 'Globe', label: 'Internet / Portal' },
+  { name: 'Link', label: 'Link / Endereço' },
+  { name: 'ExternalLink', label: 'Link externo' },
+  { name: 'Wrench', label: 'Ferramenta' },
+  { name: 'Sliders', label: 'Ajustes / Parâmetros' },
+  { name: 'Settings', label: 'Configuração' },
+  { name: 'Phone', label: 'Telefone / Contato' },
+  { name: 'Mail', label: 'Correio eletrônico' },
+  { name: 'Inbox', label: 'Caixa de entrada' },
+  { name: 'Send', label: 'Envio / Protocolo' },
+  { name: 'MessageSquare', label: 'Mensagens / Conversa' },
+  { name: 'BarChart3', label: 'Gráfico de barras' },
+  { name: 'PieChart', label: 'Gráfico de pizza' },
+  { name: 'Database', label: 'Banco de dados' },
+  { name: 'BookOpen', label: 'Manual / Legislação' },
+  { name: 'HelpCircle', label: 'Dúvidas / Ajuda' },
+  { name: 'Printer', label: 'Impressão' },
+  { name: 'MapPin', label: 'Localização' },
+  { name: 'Map', label: 'Mapa territorial' },
+  { name: 'Lock', label: 'Cadeado / Protegido' },
+  { name: 'Key', label: 'Chave / Acesso' },
+  { name: 'Sparkles', label: 'Destaque / Especial' },
+];
 
 export function getToolIcon(iconName?: string): LucideIcon {
   if (iconName && ICON_MAP[iconName]) {
@@ -61,7 +156,7 @@ export interface ColorTheme {
   borderAccent: string;
 }
 
-const COLOR_THEMES: Record<string, ColorTheme> = {
+export const COLOR_THEMES: Record<string, ColorTheme> = {
   azul: {
     name: 'azul',
     badgeBg: 'bg-blue-50',

@@ -2,12 +2,13 @@ import React, { useCallback, useEffect, useState, useMemo } from 'react';
 import { Header } from './components/Header';
 import { ToolCard } from './components/ToolCard';
 import { ToolModal } from './components/ToolModal';
+import { AdminModal } from './components/AdminModal';
 import { Ferramenta, normalizarFerramentas } from './types';
-import { Search, Filter, AlertCircle, RefreshCw } from 'lucide-react';
+import { Search, Filter, AlertCircle, RefreshCw, Settings } from 'lucide-react';
 
 function idDaHash(): string {
   try {
-    return decodeURIComponent(window.location.hash.replace(/^#/, '')).trim().toLowerCase();
+    return decodeURIComponent(window.location.hash.replace(/^#\/?/, '')).trim().toLowerCase();
   } catch {
     return '';
   }
@@ -20,7 +21,9 @@ export default function App() {
   const [tools, setTools] = useState<Ferramenta[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
   const [selectedTool, setSelectedTool] = useState<Ferramenta | null>(null);
+  const [isAdminOpen, setIsAdminOpen] = useState(false);
 
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState<string>('Todas');
@@ -51,12 +54,20 @@ export default function App() {
     return () => controller.abort();
   }, [loadTools]);
 
-  // Link direto #id: abre e fecha a janela de detalhes conforme o endereço
+  // Monitora a hash para abrir janela de detalhes (#id) ou painel administrativo (#gerenciar)
   useEffect(() => {
-    if (tools.length === 0) return;
     const syncWithHash = () => {
       const id = idDaHash();
-      setSelectedTool(id ? tools.find((t) => t.id === id) ?? null : null);
+      if (id === 'gerenciar') {
+        setIsAdminOpen(true);
+        setSelectedTool(null);
+      } else if (id && tools.length > 0) {
+        setIsAdminOpen(false);
+        setSelectedTool(tools.find((t) => t.id === id) ?? null);
+      } else {
+        setIsAdminOpen(false);
+        setSelectedTool(null);
+      }
     };
     syncWithHash();
     window.addEventListener('hashchange', syncWithHash);
@@ -64,7 +75,6 @@ export default function App() {
   }, [tools]);
 
   const handleOpenModal = (tool: Ferramenta) => {
-    setSelectedTool(tool);
     if (idDaHash() !== tool.id) window.location.hash = tool.id;
   };
 
@@ -75,14 +85,35 @@ export default function App() {
     }
   }, []);
 
-  const categories = useMemo(() => {
-    const list = Array.from(new Set(tools.map((t) => t.categoria).filter(Boolean)));
-    return ['Todas', ...list.sort((a, b) => a.localeCompare(b, 'pt-BR'))];
+  const handleOpenAdmin = () => {
+    window.location.hash = 'gerenciar';
+    setIsAdminOpen(true);
+  };
+
+  const handleCloseAdmin = () => {
+    setIsAdminOpen(false);
+    if (idDaHash() === 'gerenciar') {
+      window.history.replaceState(null, '', window.location.pathname + window.location.search);
+    }
+  };
+
+  const handleToolsPublished = (updatedTools: Ferramenta[]) => {
+    setTools(updatedTools);
+  };
+
+  // No catálogo público, itens com visivel = false não são exibidos
+  const publicTools = useMemo(() => {
+    return tools.filter((t) => t.visivel !== false);
   }, [tools]);
+
+  const categories = useMemo(() => {
+    const list = Array.from(new Set(publicTools.map((t) => t.categoria).filter(Boolean)));
+    return ['Todas', ...list.sort((a, b) => a.localeCompare(b, 'pt-BR'))];
+  }, [publicTools]);
 
   const filteredTools = useMemo(() => {
     const term = semAcento(searchTerm).trim();
-    return tools.filter((tool) => {
+    return publicTools.filter((tool) => {
       const matchesCategory =
         selectedCategory === 'Todas' || tool.categoria === selectedCategory;
       const matchesSearch =
@@ -90,10 +121,10 @@ export default function App() {
         semAcento(`${tool.nome} ${tool.resumo} ${tool.descricao} ${tool.categoria}`).includes(term);
       return matchesCategory && matchesSearch;
     });
-  }, [tools, selectedCategory, searchTerm]);
+  }, [publicTools, selectedCategory, searchTerm]);
 
-  // Busca e filtro aparecem SOMENTE a partir de 6 ferramentas
-  const showSearchAndFilters = tools.length >= 6;
+  // Busca e filtro aparecem SOMENTE a partir de 6 ferramentas visíveis
+  const showSearchAndFilters = publicTools.length >= 6;
 
   return (
     <div className="min-h-screen flex flex-col bg-slate-50 text-slate-800">
@@ -170,8 +201,26 @@ export default function App() {
 
       <ToolModal tool={selectedTool} onClose={handleCloseModal} />
 
-      <footer className="mt-auto border-t border-slate-200 bg-white py-3 px-4 text-center text-xs text-slate-500">
-        uGabinete &bull; {new Date().getFullYear()}
+      {/* Painel Administrativo de Gerenciamento */}
+      <AdminModal
+        isOpen={isAdminOpen}
+        onClose={handleCloseAdmin}
+        tools={tools}
+        onToolsPublished={handleToolsPublished}
+      />
+
+      {/* Rodapé discreto com engrenagem sutil de acesso administrativo */}
+      <footer className="mt-auto border-t border-slate-200 bg-white py-3 px-4 text-center text-xs text-slate-500 flex items-center justify-center gap-1.5">
+        <span>uGabinete &bull; {new Date().getFullYear()}</span>
+        <button
+          type="button"
+          onClick={handleOpenAdmin}
+          className="text-slate-300 hover:text-slate-500 transition p-0.5 rounded cursor-pointer"
+          title="Gerenciar ferramentas"
+          aria-label="Gerenciar ferramentas"
+        >
+          <Settings className="w-3.5 h-3.5 inline opacity-60 hover:opacity-100" />
+        </button>
       </footer>
     </div>
   );

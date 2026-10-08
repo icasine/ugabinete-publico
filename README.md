@@ -14,7 +14,7 @@ O Cloudflare Pages atualiza o seu site automaticamente sempre que você enviar a
 1. Acesse o painel do [Cloudflare Dashboard](https://dash.cloudflare.com/) e faça login.
 2. No menu lateral, clique em **Workers e Pages** e depois no botão **Criar aplicação** (ou **Create application**).
 3. Selecione a aba **Pages** e clique em **Conectar ao Git** (Connect to Git).
-4. Escolha a sua conta do GitHub e selecione o repositório do **uGabinete**.
+4. Escolha a sua conta do GitHub e selecione o repositório do **uGabinete** (`icasine/ugabinete-publico`).
 5. Na tela de configuração de build (**Configurações de compilação**):
    - **Framework predefinido (Preset)**: selecione `Vite`.
    - **Comando de build (Build command)**: `npm run build`
@@ -39,10 +39,20 @@ Depois de publicado no Cloudflare Pages:
 
 ---
 
-## 3. Como Adicionar ou Editar Ferramentas no `public/ferramentas.json`
+## 3. Painel Administrativo "Gerenciar"
 
-Todas as ferramentas do site ficam cadastradas no arquivo **`public/ferramentas.json`**.  
-Você pode editá-lo diretamente pelo GitHub no navegador clicando no ícone do lápis.
+O site conta com um painel visual para você cadastrar, editar, reordenar, duplicar e excluir ferramentas sem precisar mexer em código:
+
+- **Como acessar**: clique no ícone discreto de engrenagem no rodapé da página ou acesse diretamente pelo link: `ugabinete.com.br/#gerenciar`.
+- **Autenticação**: o painel solicita um Token de Acesso Pessoal Fine-Grained do GitHub (`github_pat_...`) com permissão **Contents: Read and write** para o repositório `icasine/ugabinete-publico`.
+- **Publicação direta**: ao clicar em **Publicar alterações**, o painel grava os arquivos `public/ferramentas.json`, `public/_redirects` e as fotos cortadas em WebP diretamente na branch `main` via API do GitHub.
+- **Histórico**: há um link direto para o histórico de commits do GitHub para conferir ou reverter alterações passadas.
+
+---
+
+## 4. Cadastro e Edição Manual no `public/ferramentas.json`
+
+Caso prefira editar diretamente pelo GitHub no navegador, todas as ferramentas ficam em `public/ferramentas.json`.
 
 ### Bloco Modelo para Copiar e Colar:
 
@@ -57,6 +67,11 @@ Você pode editá-lo diretamente pelo GitHub no navegador clicando no ícone do 
   "exigeLogin": false,
   "icone": "FileText",
   "cor": "azul",
+  "imagem": "",
+  "imagemDemo": "",
+  "tipo": "aplicativo",
+  "visivel": true,
+  "atalho": "oficio",
   "destaques": [
     "Primeiro recurso ou vantagem importante",
     "Segundo recurso prático da ferramenta",
@@ -66,78 +81,69 @@ Você pode editá-lo diretamente pelo GitHub no navegador clicando no ícone do 
     "Acesse a ferramenta pelo botão 'Abrir ferramenta agora'.",
     "Preencha as informações solicitadas na tela inicial.",
     "Clique no botão de confirmação para concluir o uso."
-  ],
-  "imagemDemo": ""
+  ]
 }
 ```
 
 ### Explicação dos Campos:
-- **`id`**: Apenas letras minúsculas, números e traços, sem espaços nem acentos (ex: `gerador-oficio`). Usado no link direto: `ugabinete.com.br/#gerador-oficio`.
-- **`nome`**: Nome principal exibido no card e no topo da janela de detalhes.
-- **`resumo`**: Frase direta de 1 linha exibida no card principal.
+- **`id`**: Apenas letras minúsculas, números e traços (ex: `gerador-oficio`). Usado no link direto: `ugabinete.com.br/#gerador-oficio`.
+- **`nome`**: Nome principal exibido no card e no topo da janela.
+- **`resumo`**: Frase direta de 1 linha exibida no cartão.
 - **`descricao`**: Texto completo na seção "Para que serve".
 - **`categoria`**: Nome da categoria (ex: *Documentos*, *Gestão*, *Atendimento*, *Calculadoras*).
-- **`url`**: Link completo da aplicação (com `https://`).
+- **`url`**: Link completo da aplicação (obrigatório começar com `https://`).
 - **`exigeLogin`**: `true` se exigir conta/senha própria, ou `false` se o acesso for livre.
-- **`icone`** *(opcional)*: Nome de um ícone da biblioteca `lucide-react`. Exemplos populares:
-  - `FileText` (documentos e textos)
-  - `Users` (atendimento e pessoas)
-  - `Calendar` (agendas e prazos)
-  - `ClipboardList` (tarefas e cadastros)
-  - `CheckSquare` (aprovações e checklist)
-  - `Folder` (pastas e arquivos)
-  - `Calculator` (cálculos)
-  - `Briefcase` (processos administrativos)
-  - `ShieldCheck` (validação e segurança)
-  - `BarChart3` (indicadores e relatórios)
-- **`cor`** *(opcional)*: Cor temática do card e da faixa de detalhes. Opções disponíveis:
-  - `"azul"` (padrão)
-  - `"verde"`
-  - `"roxo"`
-  - `"laranja"`
-  - `"rosa"`
-- **`destaques`**: Lista de pontos fortes ou recursos principais.
-- **`comoUsar`**: Passo a passo numerado de instruções para o usuário.
-- **`imagemDemo`**: Caminho da imagem de exemplo (ex: `"/demos/exemplo.png"`) ou vazio `""`.
-
-> **Observação:** O campo de busca e o filtro de categorias passam a aparecer automaticamente na página quando houver 6 ou mais ferramentas cadastradas.
+- **`tipo`** *(opcional)*:
+  - `"aplicativo"` (padrão): cartão com botão "i" para janela explicativa detalhada.
+  - `"link"`: redirecionador direto (o clique leva direto ao site, sem janela de detalhes).
+- **`visivel`** *(opcional)*: `true` (padrão) para exibir no site público, ou `false` para manter oculto aos visitantes.
+- **`atalho`** *(opcional)*: texto curto sem barras (ex: `"mapa"`). O Cloudflare Pages criará o redirecionamento `/mapa -> https://link` via `public/_redirects`.
+- **`imagem`** *(opcional)*: caminho de foto quadrada em `/icones/<id>.webp`. Se preenchido, o cartão exibe a foto no lugar do ícone.
+- **`imagemDemo`** *(opcional)*: caminho da captura de tela de exemplo em `/demos/<id>.webp`.
+- **`icone`** *(opcional)*: nome de um ícone da biblioteca `lucide-react` (ex: `FileText`, `Users`, `Calendar`, `ClipboardList`, `Calculator`, `Briefcase`, `ShieldCheck`, `BarChart3`).
+- **`cor`** *(opcional)*: cor temática (`"azul"`, `"verde"`, `"roxo"`, `"laranja"`, `"rosa"`).
+- **`destaques`**: lista de vantagens ou recursos principais.
+- **`comoUsar`**: lista de passos numerados de orientação ao usuário.
 
 ---
 
-## 4. Como Adicionar Imagens de Demonstração
+## 5. Atalhos Curtos e `public/_redirects`
 
-1. Adicione a sua imagem dentro da pasta **`public/demos/`** (por exemplo, `captura.png`).
-2. No arquivo `public/ferramentas.json`, aponte para ela:
-   ```json
-   "imagemDemo": "/demos/captura.png"
-   ```
-3. Se a ferramenta não tiver imagem, deixe o campo vazio: `"imagemDemo": ""`.
+Quando uma ferramenta possui o campo `"atalho": "mapa"`, o painel gera automaticamente uma linha no arquivo `public/_redirects`:
+
+```
+/mapa https://link-da-ferramenta.com 302
+```
+
+Dessa forma, qualquer pessoa que acessar `ugabinete.com.br/mapa` será redirecionada automaticamente pelo Cloudflare Pages para o endereço da ferramenta.
 
 ---
 
-## 5. Aplicativo no Celular (PWA) e Ícones Recomendados
+## 6. Aplicativo no Celular (PWA) e Ícones Recomendados
 
 O site é um **Progressive Web App (PWA)** instalável na tela inicial de smartphones (Android e iOS) e computadores desktop.
 
-Para máxima compatibilidade com aparelhos mais antigos, você pode acrescentar na pasta `public/` as seguintes versões em PNG geradas a partir do `public/icon.svg`:
+Arquivos de ícone recomendados na pasta `public/`:
+1. **`public/icon-192.png`** (192 × 192 pixels) — Android / Chrome.
+2. **`public/icon-512.png`** (512 × 512 pixels) — Tela de abertura (splash screen).
+3. **`public/icon-maskable-512.png`** (512 × 512 pixels) — Ícone adaptável para Android.
+4. **`public/apple-touch-icon.png`** (180 × 180 pixels) — Safari no iPhone e iPad.
+5. **`public/icon.svg`** — Vetor SVG universal.
 
-1. **`public/pwa-192x192.png`** (192 × 192 pixels) — Android / Chrome.
-2. **`public/pwa-512x512.png`** (512 × 512 pixels) — Tela de abertura (splash screen).
-3. **`public/apple-touch-icon.png`** (180 × 180 pixels) — Safari no iPhone e iPad.
+---
 
-
-## Segurança e regras do ferramentas.json
+## 7. Segurança e Regras do `ferramentas.json`
 
 O site confere cada ferramenta antes de mostrar. Se algo estiver errado, aquela ferramenta é ignorada e as outras continuam aparecendo.
 
-- `id`: só letras minúsculas, números e hífen (ex.: `gerador-oficios`). Não repita o mesmo id.
+- `id`: só letras minúsculas, números e hífen. Não repita o mesmo id.
 - `nome` e `url` são obrigatórios. O link precisa começar com `https://`.
-- `imagemDemo`: caminho dentro de `/demos/` (ex.: `/demos/gerador.png`) ou um link `https://`.
+- `imagem` e `imagemDemo`: caminhos locais ou links `https://`.
 - Nunca coloque senhas, tokens, e-mails pessoais ou links de repositórios privados: este repositório é público.
 
-## Arquivos que não devem ser apagados
+---
 
-- `public/_headers`: cabeçalhos de segurança lidos pelo Cloudflare Pages (bloqueiam scripts de terceiros, impedem que o site seja embutido em outras páginas e controlam o cache).
+## 8. Arquivos que não devem ser apagados
+
+- `public/_headers`: cabeçalhos de segurança do Cloudflare Pages (inclui liberação de `https://api.github.com` em `connect-src` para o painel administrativo funcionar no domínio publicado).
 - `public/sw.js`: service worker do aplicativo instalável. Sempre que alterar este arquivo, aumente a `VERSAO` no topo (v2, v3, ...).
-
-Se um dia o site passar a usar imagens, fontes ou scripts de outro endereço, será preciso liberar esse endereço na linha `Content-Security-Policy` do `public/_headers`.
