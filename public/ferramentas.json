@@ -1,14 +1,28 @@
 [
   {
+    "id": "mapapoliticosimples-contagem",
+    "nome": "MapaPolíticoSimples-Contagem",
+    "resumo": "Veja os candidatos por seção eleitoral",
+    "descricao": "Serve para verificar as urnas da cidade.",
+    "categoria": "Mapa Político",
+    "url": "https://mapasimples.ugabinete.com.br",
+    "exigeLogin": true,
+    "cor": "laranja",
+    "icone": "MapPin",
+    "destaques": [],
+    "comoUsar": [],
+    "imagemDemo": "",
+    "visivel": true,
+    "tipo": "aplicativo"
+  },
+  {
     "id": "gerador-documentos",
     "nome": "Gerador de Modelos de Ofício",
     "resumo": "Crie e formate modelos de ofícios e declarações padronizadas de forma rápida.",
     "descricao": "Ferramenta desenvolvida para agilizar a redação de documentos oficiais e correspondências rotineiras. Permite preencher dados básicos e gerar um arquivo pronto para impressão ou envio digital, seguindo o padrão oficial.",
     "categoria": "Documentos",
-    "url": "https://exemplo.com",
+    "url": "https://ugabinete.com.br",
     "exigeLogin": false,
-    "icone": "FileText",
-    "cor": "azul",
     "destaques": [
       "Funciona direto no navegador, sem precisar instalar nada",
       "Modelos pré-configurados prontos para preenchimento",
@@ -21,7 +35,11 @@
       "Preencha os campos solicitados (data, destinatário, assunto e texto).",
       "Clique em 'Gerar Documento' para visualizar e imprimir ou salvar em PDF."
     ],
-    "imagemDemo": ""
+    "imagemDemo": "",
+    "icone": "FileText",
+    "cor": "azul",
+    "visivel": true,
+    "tipo": "aplicativo"
   },
   {
     "id": "painel-atendimentos",
@@ -29,10 +47,8 @@
     "resumo": "Organize solicitações, pedidos de cidadãos e acompanhe o andamento de cada caso.",
     "descricao": "Sistema de gestão interna para registro e acompanhamento de chamados e demandas da população. Ajuda a equipe a manter o histórico de cada caso com prazos, responsáveis e situação atualizada.",
     "categoria": "Gestão",
-    "url": "https://exemplo.com",
+    "url": "https://ugabinete.com.br",
     "exigeLogin": true,
-    "icone": "Users",
-    "cor": "verde",
     "destaques": [
       "Histórico completo de cada demanda registrada",
       "Painel de controle com prazos e status visual",
@@ -45,6 +61,10 @@
       "No painel principal, clique em 'Nova Demanda' para registrar um atendimento.",
       "Acompanhe o andamento das solicitações pelas colunas de status."
     ],
-    "imagemDemo": ""
+    "imagemDemo": "",
+    "icone": "Users",
+    "cor": "verde",
+    "visivel": true,
+    "tipo": "aplicativo"
   }
 ]
