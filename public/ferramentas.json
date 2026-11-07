@@ -5,13 +5,13 @@
     "resumo": "Veja os candidatos por seção eleitoral",
     "descricao": "Serve para verificar as urnas da cidade.",
     "categoria": "Mapa Político",
-    "url": "https://mapasimples.ugabinete.com.br",
+    "url": "https://mapasimples.ugabinete.com.br/",
     "exigeLogin": true,
-    "cor": "laranja",
-    "icone": "MapPin",
     "destaques": [],
     "comoUsar": [],
     "imagemDemo": "",
+    "icone": "MapPin",
+    "cor": "laranja",
     "visivel": true,
     "tipo": "aplicativo"
   },
@@ -21,7 +21,7 @@
     "resumo": "Crie e formate modelos de ofícios e declarações padronizadas de forma rápida.",
     "descricao": "Ferramenta desenvolvida para agilizar a redação de documentos oficiais e correspondências rotineiras. Permite preencher dados básicos e gerar um arquivo pronto para impressão ou envio digital, seguindo o padrão oficial.",
     "categoria": "Documentos",
-    "url": "https://ugabinete.com.br",
+    "url": "https://ugabinete.com.br/",
     "exigeLogin": false,
     "destaques": [
       "Funciona direto no navegador, sem precisar instalar nada",
@@ -47,7 +47,7 @@
     "resumo": "Organize solicitações, pedidos de cidadãos e acompanhe o andamento de cada caso.",
     "descricao": "Sistema de gestão interna para registro e acompanhamento de chamados e demandas da população. Ajuda a equipe a manter o histórico de cada caso com prazos, responsáveis e situação atualizada.",
     "categoria": "Gestão",
-    "url": "https://ugabinete.com.br",
+    "url": "https://ugabinete.com.br/",
     "exigeLogin": true,
     "destaques": [
       "Histórico completo de cada demanda registrada",
@@ -66,5 +66,22 @@
     "cor": "verde",
     "visivel": true,
     "tipo": "aplicativo"
+  },
+  {
+    "id": "mapa-de-estudos-do-sim",
+    "nome": "Mapa de Estudos do SIM",
+    "resumo": "",
+    "descricao": "",
+    "categoria": "Mapa",
+    "url": "https://mapasim.ugabinete.com.br",
+    "exigeLogin": false,
+    "cor": "verde",
+    "icone": "Layers",
+    "destaques": [],
+    "comoUsar": [],
+    "imagemDemo": "",
+    "visivel": true,
+    "tipo": "aplicativo",
+    "capa": "/capas/mapa-de-estudos-do-sim-20261107151141-n6ps.webp"
   }
 ]
