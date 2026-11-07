@@ -73,15 +73,31 @@
     "resumo": "",
     "descricao": "",
     "categoria": "Mapa",
-    "url": "https://mapasim.ugabinete.com.br",
+    "url": "https://mapasim.ugabinete.com.br/",
     "exigeLogin": false,
-    "cor": "verde",
+    "destaques": [],
+    "comoUsar": [],
+    "imagemDemo": "",
     "icone": "Layers",
+    "cor": "verde",
+    "capa": "/capas/mapa-de-estudos-do-sim-20261107151141-n6ps.webp",
+    "visivel": true,
+    "tipo": "aplicativo"
+  },
+  {
+    "id": "envio-de-apresentacoes",
+    "nome": "Envio de apresentações",
+    "resumo": "Encaminhamento rápido de arquivos e apresentações",
+    "descricao": "",
+    "categoria": "Geral",
+    "url": "https://envio.ugabinete.com.br",
+    "exigeLogin": false,
+    "cor": "rosa",
+    "icone": "Mail",
     "destaques": [],
     "comoUsar": [],
     "imagemDemo": "",
     "visivel": true,
-    "tipo": "aplicativo",
-    "capa": "/capas/mapa-de-estudos-do-sim-20261107151141-n6ps.webp"
+    "tipo": "aplicativo"
   }
 ]
